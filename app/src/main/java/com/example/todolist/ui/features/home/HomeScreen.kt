@@ -16,6 +16,7 @@ fun HomeScreen() {
     ) {
         HeaderView()
         InsertTaskView()
+
     }
 }
 

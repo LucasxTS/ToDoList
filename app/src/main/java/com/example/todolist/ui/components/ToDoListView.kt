@@ -25,10 +25,10 @@ import com.example.todolist.domain.models.TaskModel
 
 @Composable
 fun ToDoListView(taskList: List<TaskModel>) {
-    
     LazyColumn {
-        itemsIndexed(taskList) {index, item ->
+        itemsIndexed(taskList) { index, item ->
             ToDoListItem(
+                task = item.description,
                 isChecked = taskList[index].completed,
                 onCheckedChange = {
 
@@ -38,7 +38,7 @@ fun ToDoListView(taskList: List<TaskModel>) {
 }
 
 @Composable
-fun ToDoListItem(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+fun ToDoListItem(task: String, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +58,7 @@ fun ToDoListItem(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
                 .fillMaxWidth()
         ) {
             Text(
-                text = "Hoje eu vou dar o cu na esquina",
+                text = task.replaceFirstChar { it.uppercase() },
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -78,5 +78,5 @@ fun ToDoListItem(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
 @Preview
 @Composable
 fun ToDoListPreview() {
-    ToDoListItem(false, {})
+    ToDoListItem("conseguir um emprego", false, {})
 }

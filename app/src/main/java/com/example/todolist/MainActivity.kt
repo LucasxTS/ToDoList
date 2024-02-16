@@ -1,8 +1,10 @@
 package com.example.todolist
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.todolist.commons.navigation.route.FlowView
@@ -15,7 +17,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController: NavHostController = rememberNavController()
             val retrofitService = RetrofitService.getInstance()
-            FlowView(navController = navController, repository = MainRepository(retrofitService))
+            val context = LocalContext.current
+            FlowView(navController = navController, repository = MainRepository(retrofitService), context)
         }
     }
 }

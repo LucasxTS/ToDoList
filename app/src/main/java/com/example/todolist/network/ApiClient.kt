@@ -5,12 +5,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface RetrofitService {
 
-    @GET("todos?device_id=0")
-    suspend fun getTasks(): Response<List<TaskModel>>
+    @GET("todos")
+    suspend fun getTasks(@Query("device_id") deviceId: String?): Response<List<TaskModel>>
 
 
     companion object {

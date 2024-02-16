@@ -7,7 +7,7 @@ import retrofit2.Response
 
 class MainRepository(private val retrofitService: RetrofitService) {
 
-     suspend fun getAllData() : Response<List<TaskModel>> {
-        return retrofitService.getTasks()
+     suspend fun getAllData(deviceId: String?) : Response<List<TaskModel>> {
+        return retrofitService.getTasks(deviceId)
      }
 }

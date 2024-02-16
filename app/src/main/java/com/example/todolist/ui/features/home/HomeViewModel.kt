@@ -15,14 +15,16 @@ class HomeViewModel(private val repository: MainRepository, context: Context) : 
     val liveData = MutableLiveData<List<TaskModel>>()
     val errorMessage = MutableLiveData<String>()
 
-    fun getAllData() {
+    fun getAllData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val request = repository.getAllData()
+            val request = repository.getAllData(DeviceIdManager.getDeviceId(context))
             if(request.isSuccessful) {
-                val tasks = request.body()
-                println(tasks)
+                val newList = filterTasksById(request.body(), context)
+                liveData.postValue(newList)
+                println(request.body())
+                println(newList)
             }
-            println(request.toString())
+            errorMessage.postValue(errorMessage.toString())
         }
     }
 
@@ -44,6 +46,14 @@ class HomeViewModel(private val repository: MainRepository, context: Context) : 
         val editor = sharedPreferences.edit()
         editor.putBoolean("firstRun", false)
         editor.apply()
+    }
+
+    private fun filterTasksById(taskList: List<TaskModel>?, context: Context): List<TaskModel> {
+        val deviceId = DeviceIdManager.getDeviceId(context)
+        if (taskList != null) {
+            return taskList.filter { it.deviceId == deviceId }
+        }
+        return emptyList()
     }
 }
 

@@ -17,7 +17,7 @@ import com.example.todolist.ui.components.InsertTaskView
 fun HomeScreen(repository: MainRepository, context: Context) {
     val viewModel: HomeViewModel = viewModel( factory = HomeViewModelFactory(repository, context))
     LaunchedEffect(Unit) {
-        viewModel.getAllData()
+        viewModel.getAllData(context)
     }
 
 

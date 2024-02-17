@@ -5,11 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.todolist.commons.persistence.DeviceIdManager
-import com.example.todolist.domain.network.repositories.MainRepository
 import com.example.todolist.ui.components.HeaderView
 import com.example.todolist.ui.components.InsertTaskView
 import com.example.todolist.ui.components.ToDoListView
@@ -20,8 +19,7 @@ fun HomeScreen(context: Context) {
     LaunchedEffect(Unit) {
         viewModel.getAllData(context)
     }
-
-
+    val tasklist by viewModel.tasksLiveData.observeAsState(emptyList())
 
     Column(
         modifier = Modifier
@@ -29,11 +27,9 @@ fun HomeScreen(context: Context) {
     ) {
         HeaderView()
         InsertTaskView()
+        ToDoListView(taskList = tasklist)
     }
 }
-
-
-
 
 @Preview
 @Composable

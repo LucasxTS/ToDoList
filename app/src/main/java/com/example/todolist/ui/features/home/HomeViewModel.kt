@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(context: Context) : ViewModel() {
 
-    private val liveData = MutableLiveData<List<TaskModel>>()
-    private val errorMessage = MutableLiveData<String>()
-    private val repository = MainRepository(RetrofitService.getInstance())
+     val tasksLiveData = MutableLiveData<List<TaskModel>>()
+     val errorMessage = MutableLiveData<String>()
+     private val repository = MainRepository(RetrofitService.getInstance())
 
     init {
         val deviceId = DeviceIdManager.getDeviceId(context)
@@ -28,9 +28,8 @@ class HomeViewModel(context: Context) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val request = repository.getAllData(DeviceIdManager.getDeviceId(context))
-                println(DeviceIdManager.getDeviceId(context))
                 if(request.isSuccessful) {
-                    println(request.body())
+                    tasksLiveData.postValue(request.body())
                 }
                 errorMessage.postValue(errorMessage.toString())
             } catch (e: Exception) {

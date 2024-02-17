@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,19 +26,19 @@ import com.example.todolist.domain.models.TaskModel
 @Composable
 fun ToDoListView(taskList: List<TaskModel>) {
     LazyColumn {
-        itemsIndexed(taskList) { index, item ->
+        items(taskList) { item ->
             ToDoListItem(
+                taskId = item.id,
                 task = item.description,
-                isChecked = taskList[index].completed,
+                isChecked = item.completed,
                 onCheckedChange = {
 
                 })
         }
     }
 }
-
 @Composable
-fun ToDoListItem(task: String, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+fun ToDoListItem(taskId: String, task: String, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,5 +78,5 @@ fun ToDoListItem(task: String, isChecked: Boolean, onCheckedChange: (Boolean) ->
 @Preview
 @Composable
 fun ToDoListPreview() {
-    ToDoListItem("conseguir um emprego", false, {})
+    ToDoListItem("fjkldsjfkldsahfj","conseguir um emprego", false, {})
 }

@@ -6,54 +6,37 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.commons.persistence.DeviceIdManager
 import com.example.todolist.domain.models.TaskModel
-import com.example.todolist.repositories.MainRepository
+import com.example.todolist.domain.network.RetrofitService
+import com.example.todolist.domain.network.repositories.MainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: MainRepository, context: Context) : ViewModel() {
+class HomeViewModel(context: Context) : ViewModel() {
 
-    val liveData = MutableLiveData<List<TaskModel>>()
-    val errorMessage = MutableLiveData<String>()
-
-    fun getAllData(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val request = repository.getAllData(DeviceIdManager.getDeviceId(context))
-            if(request.isSuccessful) {
-                val newList = filterTasksById(request.body(), context)
-                liveData.postValue(newList)
-                println(request.body())
-                println(newList)
-            }
-            errorMessage.postValue(errorMessage.toString())
-        }
-    }
+    private val liveData = MutableLiveData<List<TaskModel>>()
+    private val errorMessage = MutableLiveData<String>()
+    private val repository = MainRepository(RetrofitService.getInstance())
 
     init {
-        if (isFirstRun(context)) {
-            val deviceId = DeviceIdManager.generateDeviceId()
-            DeviceIdManager.saveDeviceId(context, deviceId)
-            changeFirstRunToFalse(context)
-        }
-    }
-
-   private fun isFirstRun(context: Context): Boolean {
-       val sharedPreferences = context.getSharedPreferences("deviceId", Context.MODE_PRIVATE)
-       return sharedPreferences.getBoolean("firstRun", true)
-   }
-
-    private fun changeFirstRunToFalse(context: Context) {
-        val sharedPreferences = context.getSharedPreferences("deviceId", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("firstRun", false)
-        editor.apply()
-    }
-
-    private fun filterTasksById(taskList: List<TaskModel>?, context: Context): List<TaskModel> {
         val deviceId = DeviceIdManager.getDeviceId(context)
-        if (taskList != null) {
-            return taskList.filter { it.deviceId == deviceId }
+        if (deviceId == null) {
+            val newDeviceId = DeviceIdManager.generateDeviceId()
+            DeviceIdManager.saveDeviceId(context, newDeviceId)
         }
-        return emptyList()
+    }
+    fun getAllData(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val request = repository.getAllData(DeviceIdManager.getDeviceId(context))
+                println(DeviceIdManager.getDeviceId(context))
+                if(request.isSuccessful) {
+                    println(request.body())
+                }
+                errorMessage.postValue(errorMessage.toString())
+            } catch (e: Exception) {
+                errorMessage.postValue("Timeout occurred: ${e.message}")
+            }
+        }
     }
 }
 

@@ -5,13 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.todolist.repositories.MainRepository
+import com.example.todolist.domain.network.repositories.MainRepository
 import com.example.todolist.ui.features.home.HomeScreen
 
 @Composable
 fun FlowView(
     navController: NavHostController,
-    repository: MainRepository,
     context: Context
 ) {
     NavHost(
@@ -19,7 +18,7 @@ fun FlowView(
         startDestination = Routes.HOME.route)
     {
         composable(Routes.HOME.route) {
-            HomeScreen(repository, context)
+            HomeScreen(context)
         }
     }
 }

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.example.todolist.R
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun InsertTaskView() {
 
@@ -42,9 +41,8 @@ fun InsertTaskView() {
             .fillMaxWidth()
     ) {
 
-        TextField(
-            value = text,
-            onValueChange =  { newText ->
+        TextField(value = text,
+            onValueChange = { newText ->
                 text = newText
             },
             singleLine = true,
@@ -56,15 +54,11 @@ fun InsertTaskView() {
                 unfocusedContainerColor = Color.Transparent,
             ),
 
-            label = { Text("Add a task...", color = Color.Black)}
-        )
+            label = { Text("Add a task...", color = Color.Black) })
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        IconButton(
-            onClick = { /*TODO*/ },
-
-            ) {
+        IconButton(onClick = { /*TODO*/ }) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_add_24),
                 contentDescription = null,

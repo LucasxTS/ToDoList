@@ -1,8 +1,8 @@
-package com.example.todolist.repositories
+package com.example.todolist.domain.network.repositories
 
 import android.content.Context
 import com.example.todolist.domain.models.TaskModel
-import com.example.todolist.network.RetrofitService
+import com.example.todolist.domain.network.RetrofitService
 import retrofit2.Response
 
 class MainRepository(private val retrofitService: RetrofitService) {

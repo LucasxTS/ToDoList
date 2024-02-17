@@ -1,4 +1,4 @@
-package com.example.todolist.network
+package com.example.todolist.domain.network
 
 import com.example.todolist.domain.models.TaskModel
 import retrofit2.Response

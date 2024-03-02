@@ -3,9 +3,9 @@ import com.google.gson.annotations.SerializedName
 
 
 data class TaskModel(
-    val id: String,
-    val description: String,
-    val completed: Boolean,
-   @SerializedName("device_id") val deviceId: String
+    @SerializedName("id") val id: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("completed") val completed: Boolean,
+    @SerializedName("device_id") val deviceId: String
 )
 

@@ -1,5 +1,6 @@
 package com.example.todolist.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -26,10 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolist.R
+import com.example.todolist.commons.persistence.DeviceIdManager
+import com.example.todolist.domain.models.TaskModel
+import com.example.todolist.ui.features.home.HomeViewModel
 
 
 @Composable
-fun InsertTaskView() {
+fun InsertTaskView(viewModel: HomeViewModel, context: Context) {
 
     var text by remember {
         mutableStateOf("")
@@ -58,7 +62,15 @@ fun InsertTaskView() {
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            onClick = {
+                viewModel.createNewTask(
+                    TaskModel("", text, false, DeviceIdManager.getDeviceId(context).toString()),
+                    context
+                )
+                text = ""
+            }
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_add_24),
                 contentDescription = null,
@@ -71,5 +83,5 @@ fun InsertTaskView() {
 @Preview
 @Composable
 fun InsertTaskPreview() {
-    InsertTaskView()
+
 }

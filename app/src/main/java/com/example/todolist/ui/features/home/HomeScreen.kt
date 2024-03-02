@@ -19,15 +19,15 @@ fun HomeScreen(context: Context) {
     LaunchedEffect(Unit) {
         viewModel.getAllData(context)
     }
-    val tasklist by viewModel.tasksLiveData.observeAsState(emptyList())
+    val taskList by viewModel.tasksLiveData.observeAsState(emptyList())
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         HeaderView()
-        InsertTaskView()
-        ToDoListView(taskList = tasklist)
+        InsertTaskView(viewModel, context)
+        ToDoListView(taskList = taskList.reversed())
     }
 }
 
